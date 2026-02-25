@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagina de prezentare. Andrei Roba</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container header-grid">
+      <div class="header-text">
+          <h1>Andrei Roba</h1>
+        <p class="subtitle">UNITBV IESC Calculatoare </p>
+      </div>
+
+      <div class="header-card">
+        <img
+          src="imagine.png"
+          alt="Poză de profil. Andrei Roba."
+          loading="lazy"
+          class="profile-img"
+          width="200"
+          height="200"
+        >
+        <div class="mini-info">
+          <p><span>Oraș</span> Brașov</p>
+          <p><span>Vârstă</span> 20 ani</p>
+
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="site-nav">
+    <div class="container">
+      <ul class="nav-list">
+        <li><a href="#about">Despre</a></li>
+        <li><a href="#education">Educație</a></li>
+        <li><a href="#extra">HYForce</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container content">
+    <section id="about" class="card">
+      <h2>Despre</h2>
+      <p>
+        Pasionat de programare si creator de continut.
+      </p>
+
+     <div class="chips">
+
+  <span class="chip">
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python logo">
+    PYTHON
+  </span>
+
+  <span class="chip">
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" alt="Java logo">
+    JAVA
+  </span>
+
+  <span class="chip">
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5 logo">
+    HTML5
+  </span>
+
+  <span class="chip">
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3 logo">
+    CSS3
+  </span>
+
+  <span class="chip">
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript logo">
+    JavaScript
+  </span>
+
+</div>
+
+    </section>
+
+   <section id="education" class="card">
+  <h2>Educație</h2>
+
+  <div class="edu-item">
+    <img src="unitbv.png" alt="Logo UNITBV" class="edu-logo">
+
+    <div class="edu-text">
+      <h3>Universitatea Transilvania din Brașov</h3>
+      <p>IESC – Calculatoare</p>
+      <span class="edu-period">2024 – prezent</span>
+    </div>
+  </div>
+
+  <div class="edu-item">
+    <img src="racovita.png" alt="Logo Liceul Emil Racoviță Brașov" class="edu-logo">
+
+    <div class="edu-text">
+      <h3>Colegiul de Științe ale Naturii "Emil Racoviță" Brașov</h3>
+      <p>Profil Stiintele naturii </p>
+      <span class="edu-period">2020 – 2024</span>
+    </div>
+  </div>
+
+</section>
+
+  </main>
+
+<aside id="extra" class="container card project-card">
+  <div class="project-header">
+    <img src="hyforce-logo.png" alt="Logo HyForce" class="project-logo">
+
+    <div>
+      <h2>HYFORCE</h2>
+      <p class="project-tagline">Software. AI. Performance.</p>
+    </div>
+  </div>
+
+  <div class="project-content">
+    <p>
+      HYFORCE este brandul meu personal de software. Construiesc aplicații desktop,
+      unelte de automatizare și soluții bazate pe AI.
+    </p>
+
+    <ul class="project-list">
+      <li>Aplicații desktop în Python cu interfață modernă</li>
+      <li>Unelte de optimizare sistem</li>
+      <li>Automatizări pentru video și social media</li>
+      <li>Bot vocal AI pentru firme</li>
+      <li>Proiecte web și platforme digitale</li>
+    </ul>
+
+    <div class="project-stats">
+      <div class="stat">
+        <span class="stat-number">5+</span>
+        <span class="stat-label">Proiecte active</span>
+      </div>
+
+      <div class="stat">
+        <span class="stat-number">AI</span>
+        <span class="stat-label">Integrare inteligență artificială</span>
+      </div>
+
+      <div class="stat">
+        <span class="stat-number">HY</span>
+        <span class="stat-label">Brand personal</span>
+      </div>
+    </div>
+  </div>
+</aside>
+
+
+ <footer id="contact" class="site-footer">
+  <div class="container footer-grid">
+
+    <div class="contact-card">
+      <h2>Contact</h2>
+      <p class="muted">Scrie-mi pe email sau lasă un mesaj aici.</p>
+
+      <div class="contact-lines">
+        <div class="contact-line">
+          <span class="k">Email</span>
+          <span class="v">andreiroba09@gmail.com</span>
+        </div>
+        <div class="contact-line">
+          <span class="k">Oraș</span>
+          <span class="v">Brașov</span>
+        </div>
+        <div class="contact-line">
+          <span class="k">Status</span>
+          <span class="v">Student IESC</span>
+        </div>
+      </div>
+
+      <p class="muted copyright">© 2026 Andrei Roba</p>
+    </div>
+
+    <div class="contact-card">
+      <h2>Trimite mesaj</h2>
+
+      <form class="contact-form" onsubmit="return false;">
+        <div class="form-row">
+          <label for="name">Nume</label>
+          <input type="text" id="name" name="name" placeholder="Numele tău" required>
+        </div>
+
+        <div class="form-row">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="email@exemplu.com" required>
+        </div>
+
+        <div class="form-row">
+          <label for="message">Mesaj</label>
+          <textarea id="message" name="message" rows="4" placeholder="Scrie mesajul aici" required></textarea>
+        </div>
+
+        <div id="formStatus" class="form-status" aria-live="polite"></div>
+
+        <button type="submit" onclick="submitForm()">Trimite</button>
+        <p class="form-hint">Verifică consola după trimitere.</p>
+      </form>
+    </div>
+
+  </div>
+
+  <script src="contact_form.js"></script>
+</footer>
+
+
+  <script>
+    alert("Hello World!");
+  </script>
+</body>
+</html>
