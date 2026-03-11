@@ -1,0 +1,22 @@
+[
+  {
+    "name": "HY Cleaner Pro",
+    "tech": "Python, Optimizare Sistem",
+    "done": true
+  },
+  {
+    "name": "HY Downloader Pro",
+    "tech": "Python, Automatizare Download",
+    "done": true
+  },
+  {
+    "name": "Video Fragmenter Pro",
+    "tech": "Python, Automatizare Video",
+    "done": true
+  },
+  {
+    "name": "HY Studio Pro",
+    "tech": "Python x C++, Efecte audio",
+    "done": false
+  }
+]
