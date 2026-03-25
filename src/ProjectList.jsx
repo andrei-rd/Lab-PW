@@ -5,7 +5,7 @@ function ProjectList() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState(''); // State pentru căutare
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     fetch('/data/projects.json')
@@ -55,6 +55,15 @@ function ProjectList() {
               description={`Tehnologii: ${project.tech} | ${project.done ? '✅ Finalizat' : '⏳ În lucru'}`} 
             />
           ))}
+      </div>
+
+      <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#f9f9f9', borderRadius: '5px' }}>
+        <h4>Statistici:</h4>
+        <ul style={{ listStyleType: 'none', padding: 0 }}>
+          <li>Total proiecte: <strong>{projects.length}</strong></li>
+          <li>Finalizate: <strong>{projects.filter(p => p.done).length}</strong></li>
+          <li>În lucru: <strong>{projects.filter(p => !p.done).length}</strong></li>
+        </ul>
       </div>
     </div>
   );
