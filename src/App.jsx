@@ -4,7 +4,8 @@ import QuickNote from './QuickNote';
 import TodoList from './TodoList';
 import ContactForm from './ContactForm';
 import Clock from './Clock';
-import ProjectList from './ProjectList'; // <-- Importul nou
+import ProjectList from './ProjectList';
+import UsersList from './UsersList'; 
 
 function App() {
   const [count, setCount] = useState(0);
@@ -12,7 +13,7 @@ function App() {
   return (
     <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>React Lab 6</h1>
+        <h1>React Lab</h1>
         <Clock />
       </div>
 
@@ -26,9 +27,8 @@ function App() {
       <QuickNote />
       <TodoList />
       <ContactForm />
-      
-      {/* Aici am adăugat lista nouă cu Fetch */}
-      <ProjectList /> 
+      <ProjectList />
+      <UsersList /> {/* <-- Componenta nouă */}
 
     </div>
   );
