@@ -4,12 +4,12 @@ import Card from './Card';
 function ProjectList() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null); // 1. State nou pentru eroare
+  const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState(''); // State pentru căutare
 
   useEffect(() => {
     fetch('/data/projects.json')
       .then((response) => {
-        // Opțional, dar recomandat: verificăm dacă răspunsul HTTP este OK (ex: nu e 404)
         if (!response.ok) {
           throw new Error('Eroare rețea');
         }
@@ -19,13 +19,12 @@ function ProjectList() {
         setProjects(data.projects);
         setLoading(false);
       })
-      .catch((err) => { // 2. Prindem eroarea
+      .catch((err) => {
         setError('Eroare la incarcarea datelor');
         setLoading(false);
       });
   }, []);
 
-  // 3. Afișăm în funcție de state
   if (loading) {
     return <div>Se încarcă...</div>;
   }
@@ -37,14 +36,25 @@ function ProjectList() {
   return (
     <div style={{ marginTop: '20px', padding: '15px', border: '1px solid #ccc', borderRadius: '8px' }}>
       <h3>Proiecte (din fisier JSON)</h3>
+      
+      <input 
+        type="text" 
+        placeholder="Caută proiect după titlu..." 
+        value={searchTerm} 
+        onChange={(e) => setSearchTerm(e.target.value)} 
+        style={{ marginBottom: '15px', padding: '5px', width: '200px' }}
+      />
+
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px' }}>
-        {projects.map((project) => (
-          <Card 
-            key={project.id} 
-            title={project.title} 
-            description={`Tehnologii: ${project.tech} | ${project.done ? '✅ Finalizat' : '⏳ În lucru'}`} 
-          />
-        ))}
+        {projects
+          .filter((p) => p.title.toLowerCase().includes(searchTerm.toLowerCase()))
+          .map((project) => (
+            <Card 
+              key={project.id} 
+              title={project.title} 
+              description={`Tehnologii: ${project.tech} | ${project.done ? '✅ Finalizat' : '⏳ În lucru'}`} 
+            />
+          ))}
       </div>
     </div>
   );
