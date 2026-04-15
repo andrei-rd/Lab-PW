@@ -143,3 +143,48 @@ li:hover { background: rgba(0, 240, 255, 0.05); border-color: rgba(0, 240, 255, 
 
 /* Oprim barele despărțitoare urâte */
 hr { display: none; }
+
+
+
+
+
+
+/* ==================================
+   STILIZARE MENIU NAVIGARE (NAVLINK)
+   ================================== */
+nav {
+  display: flex;
+  gap: 15px;
+  padding: 15px;
+  background: var(--card) !important;
+  border: 1px solid rgba(0, 240, 255, 0.2) !important;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+nav a {
+  color: var(--txt);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+nav a:hover {
+  background: rgba(0, 240, 255, 0.1);
+  border-color: rgba(0, 240, 255, 0.3);
+  color: var(--cyan);
+}
+
+/* CLASA ACTIVE (Adăugată automat de NavLink) */
+nav a.active {
+  background: rgba(168, 85, 247, 0.15);
+  border-color: var(--vio);
+  color: #fff;
+  box-shadow: 0 0 15px var(--glow-vio);
+  text-shadow: 0 0 8px var(--glow-vio);
+}
