@@ -3,7 +3,8 @@ import Navbar from './Navbar';
 import Home from './pages/Home';
 import Projects from './pages/Projects';
 import Contact from './pages/Contact';
-import NotFound from './pages/NotFound'; // <-- Importul nou
+import About from './pages/About';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
@@ -14,7 +15,9 @@ function App() {
         <Route path="/projects" element={<Projects />} />
         <Route path="/contact" element={<Contact />} />
         
-        {/* Ruta catch-all: Prinde orice URL care nu s-a potrivit cu cele de sus. Obligatoriu ultima! */}
+        {/* 2. Adăugăm ruta chiar aici, deasupra celei cu 404 */}
+        <Route path="/about" element={<About />} />
+        
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
