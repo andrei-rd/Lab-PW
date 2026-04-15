@@ -1,36 +1,22 @@
-import { useState } from 'react';
-import Card from './Card';
-import QuickNote from './QuickNote';
-import TodoList from './TodoList';
-import ContactForm from './ContactForm';
-import Clock from './Clock';
-import ProjectList from './ProjectList';
-import UsersList from './UsersList'; 
+import { BrowserRouter, Routes, Route } from 'react-router';
+import Navbar from './Navbar'; // <-- Am importat Navbar
+import Home from './pages/Home';
+import Projects from './pages/Projects';
+import Contact from './pages/Contact';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>React Lab</h1>
-        <Clock />
-      </div>
-
-      <div style={{ background: '#f4f4f4', padding: '15px', borderRadius: '8px', marginBottom: '20px' }}>
-        <p>Contor: {count}</p>
-        <button onClick={() => setCount(count + 1)}>+1</button>
-        <button onClick={() => setCount(count - 1)}>-1</button>
-        <button onClick={() => setCount(0)}>Reset</button>
-      </div>
-
-      <QuickNote />
-      <TodoList />
-      <ContactForm />
-      <ProjectList />
-      <UsersList /> {/* <-- Componenta nouă */}
-
-    </div>
+    <BrowserRouter>
+      {/* Navbar apare pe toate paginile */}
+      <Navbar />
+      
+      {/* Doar ce e în Routes se schimbă la click */}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

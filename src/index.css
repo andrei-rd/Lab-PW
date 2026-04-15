@@ -1,111 +1,145 @@
-:root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
-
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+:root {
+  --bg: #05070d;
+  --txt: #e6f1ff;
+  --cyan: #00f0ff;
+  --vio: #a855f7;
+  --card: rgba(10, 15, 25, 0.85);
+  --glow-cyan: rgba(0, 240, 255, 0.25);
 }
 
 body {
-  margin: 0;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  color: var(--txt);
+  background: var(--bg);
+  min-height: 100vh;
+  padding: 20px;
 }
 
-#root {
-  width: 1126px;
-  max-width: 100%;
+/* Fundalul grilă animat */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -20%;
+  z-index: -1;
+  background: 
+    linear-gradient(to right, rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+  background-size: 50px 50px;
+  transform: perspective(1000px) rotateX(60deg);
+  animation: gridMove 20s linear infinite;
+}
+
+@keyframes gridMove {
+  from { background-position: 0 0, 0 0; }
+  to { background-position: 0 250px, 0 250px; }
+}
+
+/* Limităm lățimea și centrăm aplicația */
+#root > div {
+  max-width: 1000px;
   margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
+  gap: 20px;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+/* ☢️ DISTRUGEM STILURILE INLINE ALBE ȘI LE ÎNLOCUIM CU PANOURI TECH ☢️ */
+div {
+  background-color: transparent !important; /* Ucide #f4f4f4 și #f9f9f9 */
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
+/* Transformăm div-urile principale în carduri glassmorphism */
+div[style*="padding: 15px"], 
+div[style*="padding: 20px"],
+div[style*="background"] {
+  background: var(--card) !important;
+  border: 1px solid rgba(0, 240, 255, 0.2) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(0, 240, 255, 0.05) !important;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+div[style*="padding: 15px"]:hover {
+  border-color: rgba(0, 240, 255, 0.5) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 0 20px var(--glow-cyan) !important;
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+/* Tipografie */
+h1, h2, h3, h4 { color: var(--cyan); margin-top: 0; }
+h1 { border-bottom: 2px solid rgba(0, 240, 255, 0.2); padding-bottom: 10px; text-shadow: 0 0 10px var(--glow-cyan); }
+p { color: #a0aec0 !important; }
+strong { color: var(--txt); }
+
+/* Input-uri și Textarea futuriste */
+input, textarea {
+  width: 100% !important;
+  background: rgba(0, 0, 0, 0.6) !important;
+  border: 1px solid rgba(0, 240, 255, 0.3) !important;
+  color: var(--cyan) !important;
+  padding: 12px 15px !important;
+  border-radius: 8px !important;
+  outline: none;
+  font-family: monospace;
+  margin-bottom: 10px !important;
+  transition: 0.3s;
 }
+
+input:focus, textarea:focus {
+  border-color: var(--vio) !important;
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.4) !important;
+}
+
+/* Butoane */
+button {
+  background: rgba(0, 240, 255, 0.1) !important;
+  color: var(--cyan) !important;
+  border: 1px solid rgba(0, 240, 255, 0.5) !important;
+  padding: 10px 20px !important;
+  border-radius: 6px !important;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: 0.3s;
+  margin-right: 10px;
+}
+
+button:hover {
+  background: var(--cyan) !important;
+  color: #000 !important;
+  box-shadow: 0 0 20px var(--glow-cyan) !important;
+}
+
+/* Butoanele de ștergere/reset (cu roșu) */
+button[style*="color: red"] {
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: #ff4d4d !important;
+  border-color: rgba(239, 68, 68, 0.5) !important;
+}
+button[style*="color: red"]:hover {
+  background: #ff4d4d !important;
+  color: #fff !important;
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.4) !important;
+}
+
+/* Liste și Cardurile mai mici */
+ul { padding: 0; display: flex; flex-direction: column; gap: 8px; }
+li {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 12px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+li:hover { background: rgba(0, 240, 255, 0.05); border-color: rgba(0, 240, 255, 0.3); }
+
+/* Oprim barele despărțitoare urâte */
+hr { display: none; }
