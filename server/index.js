@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const PORT = 3000;
 
-// Date (temporar in memorie, vom folosi MongoDB mai tarziu)
 const projects = [
   { id: 1, title: "Pagina Personala", tech: "HTML, CSS", done: true },
   { id: 2, title: "Calculator Buget", tech: "JS", done: true },
@@ -10,17 +9,36 @@ const projects = [
   { id: 4, title: "API Meteo", tech: "React, API", done: false }
 ];
 
-// Prima ruta: raspunde la GET /
 app.get('/', function(req, res) {
   res.json({ message: 'Serverul functioneaza!' });
 });
 
-// GET /api/projects - returneaza toate proiectele
 app.get('/api/projects', function(req, res) {
-  res.json(projects); // Trimitem array-ul ca raspuns JSON
+  res.json(projects);
 });
 
-// Porneste serverul
+// NOU: 1. Rută pentru a obține un singur proiect după ID
+app.get('/api/projects/:id', function(req, res) {
+  const project = projects.find(p => p.id === parseInt(req.params.id));
+  
+  if (project) {
+    res.json(project); 
+  } else {
+    res.status(404).json({ error: 'Proiectul nu a fost gasit' });
+  }
+});
+
+// NOU: 2. Rută pentru statistici
+app.get('/api/stats', function(req, res) {
+  const stats = {
+    total: projects.length,
+    done: projects.filter(p => p.done === true).length,
+    inProgress: projects.filter(p => p.done === false).length
+  };
+  
+  res.json(stats);
+});
+
 app.listen(PORT, function() {
   console.log('Server pornit pe http://localhost:' + PORT);
 });
