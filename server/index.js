@@ -49,6 +49,34 @@ app.post('/api/projects', function(req, res) {
   res.status(201).json(newProject); 
 });
 
+
+app.delete('/api/projects/:id', function(req, res) {
+  const id = parseInt(req.params.id);
+  const index = projects.findIndex(p => p.id === id);
+
+  if (index === -1) {
+    return res.status(404).json({ error: 'Proiectul nu a fost gasit pentru stergere' });
+  }
+
+  projects.splice(index, 1);
+  res.json({ message: 'Proiect sters cu succes', id: id });
+});
+
+app.put('/api/projects/:id', function(req, res) {
+  const id = parseInt(req.params.id);
+  const project = projects.find(p => p.id === id);
+
+  if (!project) {
+    return res.status(404).json({ error: 'Proiectul nu a fost gasit pentru actualizare' });
+  }
+
+  if (req.body.title) project.title = req.body.title;
+  if (req.body.tech) project.tech = req.body.tech;
+  if (req.body.done !== undefined) project.done = req.body.done;
+
+  res.json(project);
+});
+
 app.listen(PORT, function() {
   console.log('Server pornit pe http://localhost:' + PORT);
 });
