@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Project = require('./models/Project');
+
 const app = express();
 const PORT = 3000;
 
@@ -9,13 +10,6 @@ app.use(express.json());
 mongoose.connect('mongodb://localhost:27017/dashboard')
   .then(() => console.log('Conectat la MongoDB!'))
   .catch(err => console.error('Eroare conectare MongoDB:', err));
-
-const projects = [
-  { id: 1, title: "Pagina Personala", tech: "HTML, CSS", done: true },
-  { id: 2, title: "Calculator Buget", tech: "JS", done: true },
-  { id: 3, title: "Dashboard React", tech: "React", done: false },
-  { id: 4, title: "API Meteo", tech: "React, API", done: false }
-];
 
 app.get('/', function(req, res) {
   res.json({ message: 'Serverul functioneaza!' });
@@ -26,65 +20,77 @@ app.get('/api/projects', async function(req, res) {
     const projects = await Project.find();
     res.json(projects);
   } catch (err) {
-    res.status(500).json({ error: 'Eroare ' + err });
+    res.status(500).json({ error: err.message });
   }
 });
 
-app.get('/api/projects/:id', function(req, res) {
-  const project = projects.find(p => p.id === parseInt(req.params.id));
-  if (project) {
+app.get('/api/projects/:id', async function(req, res) {
+  try {
+    const project = await Project.findById(req.params.id);
+    if (!project) {
+      return res.status(404).json({ error: 'Proiectul nu a fost gasit' });
+    }
     res.json(project);
-  } else {
-    res.status(404).json({ error: 'Proiectul nu a fost gasit' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
-app.get('/api/stats', function(req, res) {
-  const stats = {
-    total: projects.length,
-    done: projects.filter(p => p.done === true).length,
-    inProgress: projects.filter(p => p.done === false).length
-  };
-  res.json(stats);
-});
-
-app.post('/api/projects', function(req, res) {
-  const newProject = {
-    id: projects.length + 1, 
-    title: req.body.title,   
-    tech: req.body.tech,     
-    done: req.body.done || false 
-  };
-  
-  projects.push(newProject); 
-  res.status(201).json(newProject); 
-});
-
-app.delete('/api/projects/:id', function(req, res) {
-  const id = parseInt(req.params.id);
-  const index = projects.findIndex(p => p.id === id);
-
-  if (index === -1) {
-    return res.status(404).json({ error: 'Proiectul nu a fost gasit pentru stergere' });
+app.get('/api/stats', async function(req, res) {
+  try {
+    const projects = await Project.find();
+    const stats = {
+      total: projects.length,
+      done: projects.filter(p => p.done === true).length,
+      inProgress: projects.filter(p => p.done === false).length
+    };
+    res.json(stats);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
-
-  projects.splice(index, 1);
-  res.json({ message: 'Proiect sters cu succes', id: id });
 });
 
-app.put('/api/projects/:id', function(req, res) {
-  const id = parseInt(req.params.id);
-  const project = projects.find(p => p.id === id);
-
-  if (!project) {
-    return res.status(404).json({ error: 'Proiectul nu a fost gasit pentru actualizare' });
+app.post('/api/projects', async function(req, res) {
+  try {
+    const newProject = new Project({
+      title: req.body.title,
+      tech: req.body.tech,
+      done: req.body.done || false
+    });
+    
+    const saved = await newProject.save();
+    res.status(201).json(saved);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
   }
+});
 
-  if (req.body.title) project.title = req.body.title;
-  if (req.body.tech) project.tech = req.body.tech;
-  if (req.body.done !== undefined) project.done = req.body.done;
+app.delete('/api/projects/:id', async function(req, res) {
+  try {
+    const deletedProject = await Project.findByIdAndDelete(req.params.id);
+    if (!deletedProject) {
+      return res.status(404).json({ error: 'Proiectul nu a fost gasit pentru stergere' });
+    }
+    res.json({ message: 'Deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
-  res.json(project);
+app.put('/api/projects/:id', async function(req, res) {
+  try {
+    const updatedProject = await Project.findByIdAndUpdate(
+      req.params.id, 
+      req.body, 
+      { new: true } 
+    );
+    if (!updatedProject) {
+      return res.status(404).json({ error: 'Proiectul nu a fost gasit pentru actualizare' });
+    }
+    res.json(updatedProject);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 app.listen(PORT, function() {
