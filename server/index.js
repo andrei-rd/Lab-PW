@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const Project = require('./models/Project');
 const app = express();
 const PORT = 3000;
 
@@ -20,8 +21,13 @@ app.get('/', function(req, res) {
   res.json({ message: 'Serverul functioneaza!' });
 });
 
-app.get('/api/projects', function(req, res) {
-  res.json(projects);
+app.get('/api/projects', async function(req, res) {
+  try {
+    const projects = await Project.find();
+    res.json(projects);
+  } catch (err) {
+    res.status(500).json({ error: 'Eroare ' + err });
+  }
 });
 
 app.get('/api/projects/:id', function(req, res) {
