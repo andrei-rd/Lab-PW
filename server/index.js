@@ -1,8 +1,13 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
+
+mongoose.connect('mongodb://localhost:27017/dashboard')
+  .then(() => console.log('Conectat la MongoDB!'))
+  .catch(err => console.error('Eroare conectare MongoDB:', err));
 
 const projects = [
   { id: 1, title: "Pagina Personala", tech: "HTML, CSS", done: true },
@@ -48,7 +53,6 @@ app.post('/api/projects', function(req, res) {
   projects.push(newProject); 
   res.status(201).json(newProject); 
 });
-
 
 app.delete('/api/projects/:id', function(req, res) {
   const id = parseInt(req.params.id);
