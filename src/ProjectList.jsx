@@ -8,7 +8,7 @@ function ProjectList() {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetch('/data/projects.json')
+    fetch('http://localhost:3000/api/projects')
       .then((response) => {
         if (!response.ok) {
           throw new Error('Eroare rețea');
@@ -16,10 +16,11 @@ function ProjectList() {
         return response.json();
       })
       .then((data) => {
-        setProjects(data.projects);
+        setProjects(data);
         setLoading(false);
       })
       .catch((err) => {
+        console.error(err);
         setError('Eroare la incarcarea datelor');
         setLoading(false);
       });
@@ -35,7 +36,7 @@ function ProjectList() {
 
   return (
     <div style={{ marginTop: '20px', padding: '15px', border: '1px solid #ccc', borderRadius: '8px' }}>
-      <h3>Proiecte (din fisier JSON)</h3>
+      <h3>Proiecte (din API)</h3>
       
       <input 
         type="text" 
@@ -50,7 +51,7 @@ function ProjectList() {
           .filter((p) => p.title.toLowerCase().includes(searchTerm.toLowerCase()))
           .map((project) => (
             <Card 
-              key={project.id} 
+              key={project._id || project.id} 
               title={project.title} 
               description={`Tehnologii: ${project.tech} | ${project.done ? '✅ Finalizat' : '⏳ În lucru'}`} 
             />
