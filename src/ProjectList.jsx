@@ -33,16 +33,19 @@ function ProjectList() {
     }
   }
 
+  // UPDATE: Adăugată confirmarea înainte de ștergere
   async function handleDelete(id) {
-    try {
-      const response = await fetch(`http://localhost:3000/api/projects/${id}`, {
-        method: 'DELETE',
-      });
-      if (response.ok) {
-        setProjects(projects.filter((p) => (p._id || p.id) !== id));
+    if (window.confirm('Sigur doriti sa stergeti acest proiect?')) {
+      try {
+        const response = await fetch(`http://localhost:3000/api/projects/${id}`, {
+          method: 'DELETE',
+        });
+        if (response.ok) {
+          setProjects(projects.filter((p) => (p._id || p.id) !== id));
+        }
+      } catch (err) {
+        console.error('Eroare la stergere:', err);
       }
-    } catch (err) {
-      console.error('Eroare la stergere:', err);
     }
   }
 
@@ -162,7 +165,7 @@ function ProjectList() {
                   description={`Tehnologii: ${project.tech} | ${project.done ? '✅ Finalizat' : '⏳ În lucru'}`} 
                 />
                 
-                {/* NOU: Butonul de intrare in mod Editare */}
+                {/* Butonul de intrare in mod Editare */}
                 <button 
                   onClick={() => handleEditClick(project)}
                   style={{ backgroundColor: '#17a2b8', color: 'white', border: 'none', padding: '5px', borderRadius: '3px', cursor: 'pointer' }}
