@@ -17,7 +17,6 @@ function ProjectList() {
   async function handleSubmit(e) {
     e.preventDefault();
     if (!title || !tech) return;
-    
     try {
       const response = await fetch('http://localhost:3000/api/projects', {
         method: 'POST',
@@ -26,26 +25,16 @@ function ProjectList() {
       });
       const newProject = await response.json();
       setProjects([...projects, newProject]);
-      setTitle('');
-      setTech('');
-    } catch (err) {
-      console.error('Eroare:', err);
-    }
+      setTitle(''); setTech('');
+    } catch (err) { console.error('Eroare:', err); }
   }
 
-  // UPDATE: Adăugată confirmarea înainte de ștergere
   async function handleDelete(id) {
     if (window.confirm('Sigur doriti sa stergeti acest proiect?')) {
       try {
-        const response = await fetch(`http://localhost:3000/api/projects/${id}`, {
-          method: 'DELETE',
-        });
-        if (response.ok) {
-          setProjects(projects.filter((p) => (p._id || p.id) !== id));
-        }
-      } catch (err) {
-        console.error('Eroare la stergere:', err);
-      }
+        const response = await fetch(`http://localhost:3000/api/projects/${id}`, { method: 'DELETE' });
+        if (response.ok) setProjects(projects.filter((p) => (p._id || p.id) !== id));
+      } catch (err) { console.error('Eroare la stergere:', err); }
     }
   }
 
@@ -56,14 +45,11 @@ function ProjectList() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ done: !currentDone })
       });
-      
       if (response.ok) {
         const updatedProject = await response.json();
         setProjects(projects.map(p => (p._id || p.id) === id ? updatedProject : p));
       }
-    } catch (err) {
-      console.error('Eroare la actualizare status:', err);
-    }
+    } catch (err) { console.error('Eroare:', err); }
   }
 
   function handleEditClick(project) {
@@ -79,126 +65,107 @@ function ProjectList() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title: editTitle, tech: editTech }) 
       });
-      
       if (response.ok) {
         const updatedProject = await response.json();
-        
         setProjects(projects.map(p => (p._id || p.id) === id ? updatedProject : p));
         setEditingId(null); 
       }
-    } catch (err) {
-      console.error('Eroare la salvare editare:', err);
-    }
+    } catch (err) { console.error('Eroare:', err); }
   }
 
   useEffect(() => {
     fetch('http://localhost:3000/api/projects')
-      .then((response) => {
-        if (!response.ok) throw new Error('Eroare rețea');
-        return response.json();
-      })
-      .then((data) => {
-        setProjects(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setError('Eroare la incarcarea datelor');
-        setLoading(false);
-      });
+      .then((res) => { if (!res.ok) throw new Error('Eroare rețea'); return res.json(); })
+      .then((data) => { setProjects(data); setLoading(false); })
+      .catch((err) => { setError('Eroare la incarcare'); setLoading(false); });
   }, []);
 
-  if (loading) return <div>Se încarcă...</div>;
-  if (error) return <div style={{ color: 'red', marginTop: '20px' }}><strong>{error}</strong></div>;
+  if (loading) return <div style={{ color: '#00e5ff' }}>Se încarcă...</div>;
+  if (error) return <div style={{ color: '#ff0044' }}><strong>{error}</strong></div>;
 
   return (
-    <div style={{ marginTop: '20px', padding: '15px', border: '1px solid #ccc', borderRadius: '8px' }}>
-      <h3>Proiecte (din API)</h3>
+    <div style={{ marginTop: '20px' }}>
+      
+      {/* CSS injectat pentru efectele de Hover si tranzitii */}
+      <style>{`
+        .cyber-input {
+          background-color: rgba(0, 20, 30, 0.6); border: 1px solid #00e5ff; color: #fff; border-radius: 4px; transition: all 0.3s;
+        }
+        .cyber-input:focus { outline: none; box-shadow: 0 0 10px rgba(0, 229, 255, 0.4); }
+        
+        .cyber-btn {
+          background: transparent; font-weight: bold; text-transform: uppercase; border-radius: 4px; cursor: pointer; transition: all 0.3s;
+        }
+        .cyber-btn:hover { background-color: currentColor; color: #0f172a !important; box-shadow: 0 0 15px currentColor; }
+        
+        .cyber-card {
+          background-color: rgba(0, 20, 30, 0.4); border-radius: 8px; transition: all 0.3s ease; padding: 15px;
+        }
+        .cyber-card:hover { transform: translateY(-5px); }
+      `}</style>
 
-      {/* Formular principal de Adăugare */}
-      <form onSubmit={handleSubmit} style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#f0f0f0', borderRadius: '5px' }}>
-        <h4>Adaugă Proiect Nou</h4>
-        <input type="text" placeholder="Titlu" value={title} onChange={(e) => setTitle(e.target.value)} style={{ marginRight: '10px', padding: '5px' }} />
-        <input type="text" placeholder="Tehnologii" value={tech} onChange={(e) => setTech(e.target.value)} style={{ marginRight: '10px', padding: '5px' }} />
-        <button type="submit" style={{ padding: '5px 10px' }}>Adaugă</button>
+      {/* Formular principal de Adăugare Reparata (Fara alb) */}
+      <form onSubmit={handleSubmit} style={{ marginBottom: '30px', padding: '20px', backgroundColor: 'rgba(0, 229, 255, 0.05)', border: '1px solid rgba(0, 229, 255, 0.3)', borderRadius: '8px', boxShadow: '0 0 15px rgba(0, 229, 255, 0.05)' }}>
+        <h4 style={{ color: '#00e5ff', marginTop: 0 }}>Adaugă Proiect Nou</h4>
+        <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
+          <input className="cyber-input" type="text" placeholder="Titlu" value={title} onChange={(e) => setTitle(e.target.value)} style={{ padding: '10px', flex: 1, minWidth: '200px' }} />
+          <input className="cyber-input" type="text" placeholder="Tehnologii" value={tech} onChange={(e) => setTech(e.target.value)} style={{ padding: '10px', flex: 1, minWidth: '200px' }} />
+          <button className="cyber-btn" type="submit" style={{ padding: '10px 20px', border: '1px solid #00e5ff', color: '#00e5ff' }}>Adaugă</button>
+        </div>
       </form>
       
-      <input type="text" placeholder="Caută proiect după titlu..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} style={{ marginBottom: '15px', padding: '5px', width: '200px' }} />
+      <input className="cyber-input" type="text" placeholder="Caută proiect după titlu..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} style={{ marginBottom: '20px', padding: '10px', width: '100%', maxWidth: '300px' }} />
 
       {/* Lista de proiecte */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px' }}>
-        {projects
-          .filter((p) => p.title.toLowerCase().includes(searchTerm.toLowerCase()))
-          .map((project) => {
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+        {projects.filter((p) => p.title.toLowerCase().includes(searchTerm.toLowerCase())).map((project) => {
             const currentId = project._id || project.id; 
-          
+            const isDone = project.done;
+            // Culori dinamice bazate pe status
+            const statusColor = isDone ? '#00ff88' : '#00e5ff'; 
             
+            // Modul EDITARE
             if (editingId === currentId) {
               return (
-                <div key={currentId} style={{ display: 'flex', flexDirection: 'column', gap: '5px', padding: '15px', border: '2px dashed #007bff', borderRadius: '5px', backgroundColor: '#e9f5ff' }}>
-                  <h4>Editează Proiectul</h4>
-                  <input 
-                    type="text" 
-                    value={editTitle} 
-                    onChange={(e) => setEditTitle(e.target.value)} 
-                    style={{ padding: '5px' }} 
-                  />
-                  <input 
-                    type="text" 
-                    value={editTech} 
-                    onChange={(e) => setEditTech(e.target.value)} 
-                    style={{ padding: '5px' }} 
-                  />
-                  <div style={{ display: 'flex', gap: '10px', marginTop: '5px' }}>
-                    <button onClick={() => handleUpdate(currentId)} style={{ backgroundColor: '#28a745', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '3px', cursor: 'pointer' }}>Salvează</button>
-                    <button onClick={() => setEditingId(null)} style={{ backgroundColor: '#6c757d', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '3px', cursor: 'pointer' }}>Anulează</button>
+                <div key={currentId} className="cyber-card" style={{ display: 'flex', flexDirection: 'column', gap: '10px', border: '1px dashed #00e5ff', width: '300px' }}>
+                  <h4 style={{ color: '#00e5ff', margin: 0 }}>Editează Proiectul</h4>
+                  <input className="cyber-input" type="text" value={editTitle} onChange={(e) => setEditTitle(e.target.value)} style={{ padding: '8px' }} />
+                  <input className="cyber-input" type="text" value={editTech} onChange={(e) => setEditTech(e.target.value)} style={{ padding: '8px' }} />
+                  <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+                    <button className="cyber-btn" onClick={() => handleUpdate(currentId)} style={{ border: '1px solid #00ff88', color: '#00ff88', padding: '8px', flex: 1 }}>Salvează</button>
+                    <button className="cyber-btn" onClick={() => setEditingId(null)} style={{ border: '1px solid #ffaa00', color: '#ffaa00', padding: '8px', flex: 1 }}>Anulează</button>
                   </div>
                 </div>
               );
             }
 
-            
+            // Modul NORMAL
             return (
-              <div key={currentId} style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+              <div key={currentId} className="cyber-card" style={{ display: 'flex', flexDirection: 'column', gap: '10px', border: `1px solid ${statusColor}`, boxShadow: `0 0 10px ${statusColor}33`, width: '300px' }}>
                 <Card 
                   title={project.title} 
-                  description={`Tehnologii: ${project.tech} | ${project.done ? '✅ Finalizat' : '⏳ În lucru'}`} 
+                  description={`Tehnologii: ${project.tech} | ${isDone ? '✅ Finalizat' : '⏳ În lucru'}`} 
                 />
                 
-                {/* Butonul de intrare in mod Editare */}
-                <button 
-                  onClick={() => handleEditClick(project)}
-                  style={{ backgroundColor: '#17a2b8', color: 'white', border: 'none', padding: '5px', borderRadius: '3px', cursor: 'pointer' }}
-                >
-                  Editează
-                </button>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: 'auto' }}>
+                  {/* Editeaza = Albastru/Cyan */}
+                  <button className="cyber-btn" onClick={() => handleEditClick(project)} style={{ border: '1px solid #00e5ff', color: '#00e5ff', padding: '8px' }}>
+                    Editează
+                  </button>
 
-                {/* Butoanele vechi */}
-                <button 
-                  onClick={() => handleToggle(currentId, project.done)}
-                  style={{ backgroundColor: project.done ? '#ffc107' : '#28a745', color: project.done ? 'black' : 'white', border: 'none', padding: '5px', borderRadius: '3px', cursor: 'pointer' }}
-                >
-                  {project.done ? 'Marchează "În lucru"' : 'Marchează "Finalizat"'}
-                </button>
+                  {/* Finalizeaza = Verde / In lucru = Galben */}
+                  <button className="cyber-btn" onClick={() => handleToggle(currentId, project.done)} style={{ border: isDone ? '1px solid #ffaa00' : '1px solid #00ff88', color: isDone ? '#ffaa00' : '#00ff88', padding: '8px' }}>
+                    {isDone ? 'Marchează "În lucru"' : 'Marchează "Finalizat"'}
+                  </button>
 
-                <button 
-                  onClick={() => handleDelete(currentId)}
-                  style={{ backgroundColor: '#ff4d4d', color: 'white', border: 'none', padding: '5px', borderRadius: '3px', cursor: 'pointer' }}
-                >
-                  Șterge Proiectul
-                </button>
+                  {/* Sterge = Rosu */}
+                  <button className="cyber-btn" onClick={() => handleDelete(currentId)} style={{ border: '1px solid #ff0044', color: '#ff0044', padding: '8px' }}>
+                    Șterge Proiectul
+                  </button>
+                </div>
               </div>
             );
           })}
-      </div>
-
-      <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#f9f9f9', borderRadius: '5px' }}>
-        <h4>Statistici:</h4>
-        <ul style={{ listStyleType: 'none', padding: 0 }}>
-          <li>Total proiecte: <strong>{projects.length}</strong></li>
-          <li>Finalizate: <strong>{projects.filter(p => p.done).length}</strong></li>
-          <li>În lucru: <strong>{projects.filter(p => !p.done).length}</strong></li>
-        </ul>
       </div>
     </div>
   );

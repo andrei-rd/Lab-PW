@@ -41,15 +41,16 @@ app.get('/api/projects/:id', async function(req, res) {
 
 app.get('/api/stats', async function(req, res) {
   try {
-    const projects = await Project.find();
-    const stats = {
-      total: projects.length,
-      done: projects.filter(p => p.done === true).length,
-      inProgress: projects.filter(p => p.done === false).length
-    };
-    res.json(stats);
+    const total = await Project.countDocuments();
+    const done = await Project.countDocuments({ done: true });
+    
+    res.json({ 
+      total: total, 
+      done: done, 
+      inProgress: total - done 
+    });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: 'Eroare server: ' + err.message });
   }
 });
 
